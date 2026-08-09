@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>not found — waendom.com</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400&family=Work+Sans:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#f8f4ea; --ink:#24221d; --ink-soft:#79746a; }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; min-height:100vh; background:var(--cream); color:var(--ink);
+    font-family:"Work Sans",-apple-system,sans-serif;
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:center; text-align:center; padding:40px 28px; gap:22px;
+  }
+  h1 {
+    font-family:"Space Mono",monospace; font-weight:400; text-transform:lowercase;
+    font-size:clamp(1.6rem,5vw,2.2rem); letter-spacing:.02em; margin:0;
+  }
+  p { margin:0; color:var(--ink-soft); max-width:38ch; line-height:1.6; }
+  .links { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:10px; }
+  a.btn {
+    font-family:"Space Mono",monospace; text-transform:lowercase;
+    font-size:.78rem; letter-spacing:.16em; text-decoration:none; color:var(--ink);
+    padding:14px 30px; border:1px solid var(--ink); border-radius:999px;
+    transition:background .25s cubic-bezier(.22,1,.36,1), color .25s cubic-bezier(.22,1,.36,1);
+  }
+  a.btn:hover { background:var(--ink); color:var(--cream); }
+</style>
+</head>
+<body>
+  <h1>nothing here</h1>
+  <p>This page doesn&rsquo;t exist &mdash; or it moved. The work is all still where it was.</p>
+  <div class="links">
+    <a class="btn" id="home" href="/">home</a>
+    <a class="btn" id="gallery" href="/gallery/index.html">gallery</a>
+  </div>
+<script>
+  // Works out the site root: on username.github.io the first path segment is
+  // the repository, on a custom domain the root is simply "/".
+  (function () {
+    var base = "/";
+    if (location.hostname.endsWith("github.io")) {
+      var seg = location.pathname.split("/").filter(Boolean)[0];
+      if (seg) base = "/" + seg + "/";
+    }
+    document.getElementById("home").href = base;
+    document.getElementById("gallery").href = base + "gallery/index.html";
+  })();
+</script>
+</body>
+</html>
