@@ -9,6 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const root = document.documentElement;
 
+  // Kann der Browser WebP? Das Raster klärt das selbst über <picture>,
+  // die Lightbox lädt ihr Bild per JavaScript und muss daher nachfragen.
+  const canWebp = (() => {
+    const c = document.createElement("canvas");
+    return !!(c.toDataURL && c.toDataURL("image/webp").indexOf("image/webp") === 5);
+  })();
+
   /* ---------------------------------------------------- overlay menu ---- */
   const toggle = document.querySelector(".menu-toggle");
   const overlay = document.querySelector(".menu-overlay");
@@ -178,7 +185,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // Show the grid image straight away so there is never an empty frame,
       // then swap in the high-resolution file once it has finished loading.
       const thumb = img.currentSrc || img.src;
-      const full = img.dataset.full;
+      let full = img.dataset.full;
+      if (full && canWebp) {
+        full = full.replace(/\.(jpe?g|png)$/i, ".webp");
+      }
       lbImg.src = thumb;
       lbImg.alt = img.alt || "";
       box.classList.add("is-loading");
@@ -192,7 +202,15 @@ document.addEventListener("DOMContentLoaded", () => {
             box.classList.remove("is-loading");
           }
         };
-        hi.onerror = () => box.classList.remove("is-loading");
+        hi.onerror = () => {
+          // WebP-Fassung nicht da? Dann die Originaldatei versuchen.
+          if (full !== img.dataset.full) {
+            full = img.dataset.full;
+            hi.src = full;
+          } else {
+            box.classList.remove("is-loading");
+          }
+        };
         hi.src = full;
       } else {
         box.classList.remove("is-loading");

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Die Quelldateien der Alben und die Build-Skripte gehören nicht in den Index.
+Disallow: /albums/
+Disallow: /tools/
+
+Sitemap: https://waendom.com/sitemap.xml

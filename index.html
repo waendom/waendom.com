@@ -6,8 +6,8 @@
 <title>waendom.com</title>
 <meta name="description" content="A visual archive of photography, illustration and painted work.">
 
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-180.png">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="waendom.com">
@@ -20,11 +20,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-<a class="wordmark-bar" href="index.html" aria-label="Zur Startseite">
+<a class="wordmark-bar" href="/" aria-label="Zur Startseite">
   <span class="wordmark-text">waendom.com</span>
   <svg class="wordmark-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
 </a>
@@ -36,17 +36,23 @@
 <div class="menu-overlay">
   <span class="eyebrow">menu</span>
   <nav class="overlay-nav" aria-label="Hauptnavigation">
-    <a href="index.html" aria-current="page">home</a>
-    <a href="gallery/index.html">gallery</a>
-    <a href="about.html">about waendom</a>
-    <a href="contact.html">contact</a>
+    <a href="/" aria-current="page">home</a>
+    <a href="/gallery/">gallery</a>
+    <a href="/about/">about waendom</a>
+    <a href="/contact/">contact</a>
   </nav>
 </div>
 
 <header class="hero">
   <div class="hero-media">
-    <img class="figure-left" src="images/man-left.png" alt="Ink drawing: an older man sitting on the ground, arms resting on his knees" width="869" height="721" loading="eager" decoding="async">
-    <img class="figure-right" src="images/man-right.png" alt="Ink drawing: an older man sitting on a wooden chair, legs crossed" width="706" height="930" loading="eager" decoding="async">
+    <picture>
+            <source srcset="/images/man-left.webp" type="image/webp">
+            <img class="figure-left" src="/images/man-left.png" alt="Ink drawing: an older man sitting on the ground, arms resting on his knees" width="869" height="721" loading="eager" decoding="async">
+          </picture>
+    <picture>
+            <source srcset="/images/man-right.webp" type="image/webp">
+            <img class="figure-right" src="/images/man-right.png" alt="Ink drawing: an older man sitting on a wooden chair, legs crossed" width="706" height="930" loading="eager" decoding="async">
+          </picture>
   </div>
 </header>
 
@@ -61,23 +67,38 @@
     <section class="highlights">
       <div class="highlights-grid">
         <figure class="art-piece">
-          <img src="images/mary-cooper.jpg" data-full="images/full/mary-cooper.jpg" alt="Digital painting: a woman in profile with dark hair, wrapped in a rust-red cloak over a white collar, on a pale cream ground" width="1200" height="1580" loading="lazy" decoding="async">
+          <picture>
+            <source srcset="/images/mary-cooper.webp" type="image/webp">
+            <img src="/images/mary-cooper.jpg" data-full="/images/full/mary-cooper.jpg" alt="Digital painting: a woman in profile with dark hair, wrapped in a rust-red cloak over a white collar, on a pale cream ground" width="1200" height="1580" loading="lazy" decoding="async">
+          </picture>
         </figure>
         <figure class="art-piece">
-          <img src="images/canvas-05.jpg" data-full="images/full/canvas-05.jpg" alt="Oil study on canvas: a face in close-up with both eyes and lips visible, painted in warm terracotta" width="1200" height="1809" loading="lazy" decoding="async">
+          <picture>
+            <source srcset="/images/canvas-05.webp" type="image/webp">
+            <img src="/images/canvas-05.jpg" data-full="/images/full/canvas-05.jpg" alt="Oil study on canvas: a face in close-up with both eyes and lips visible, painted in warm terracotta" width="1200" height="1809" loading="lazy" decoding="async">
+          </picture>
         </figure>
         <figure class="art-piece">
-          <img src="images/cap.jpg" data-full="images/full/cap.jpg" alt="Digital painting: a close-up face under a maroon cap, brow furrowed and mouth open, against a muted green background" width="1200" height="1200" loading="lazy" decoding="async">
+          <picture>
+            <source srcset="/images/cap.webp" type="image/webp">
+            <img src="/images/cap.jpg" data-full="/images/full/cap.jpg" alt="Digital painting: a close-up face under a maroon cap, brow furrowed and mouth open, against a muted green background" width="1200" height="1200" loading="lazy" decoding="async">
+          </picture>
         </figure>
         <figure class="art-piece">
-          <img src="images/analog-03.jpg" data-full="images/full/analog-03.jpg" alt="Film photograph: the upper corner of a modern high-rise, its glass facade catching low sun against a blue sky" width="1200" height="800" loading="lazy" decoding="async">
+          <picture>
+            <source srcset="/images/analog-03.webp" type="image/webp">
+            <img src="/images/analog-03.jpg" data-full="/images/full/analog-03.jpg" alt="Film photograph: the upper corner of a modern high-rise, its glass facade catching low sun against a blue sky" width="1200" height="800" loading="lazy" decoding="async">
+          </picture>
         </figure>
         <figure class="art-piece">
-          <img src="images/sticker-backstein.jpg" data-full="images/full/sticker-backstein.jpg" alt="A waendom sticker on a grey pole in front of a brick wall" width="1134" height="2016" loading="lazy" decoding="async">
+          <picture>
+            <source srcset="/images/sticker-backstein.webp" type="image/webp">
+            <img src="/images/sticker-backstein.jpg" data-full="/images/full/sticker-backstein.jpg" alt="A waendom sticker on a grey pole in front of a brick wall" width="1134" height="2016" loading="lazy" decoding="async">
+          </picture>
         </figure>
       </div>
       <div class="more-row">
-        <a class="more-btn" href="gallery/index.html">more</a>
+        <a class="more-btn" href="/gallery/">more</a>
       </div>
     </section>
 
@@ -94,6 +115,6 @@
   </div>
 </footer>
 
-<script src="script.js"></script>
+<script src="/script.js"></script>
 </body>
 </html>

@@ -55,6 +55,7 @@ SOURCE_TYPES = (".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif", ".tif", ".ti
 
 GRID_WIDTH, GRID_QUALITY = 1200, 80
 FULL_WIDTH, FULL_QUALITY = 2000, 82
+WEBP_QUALITY = 78     # entspricht etwa JPEG 82, bei rund 30 % weniger Gewicht
 
 START = "<!-- gallery:start"
 END = "<!-- gallery:end -->"
@@ -82,12 +83,47 @@ def load_captions():
     return caps
 
 
+NUM_PREFIX = re.compile(r"^(\d+)[-_ ]+")
+
+
 def scan(album):
+    """Bilder eines Albums in Anzeigereihenfolge.
+
+    Dateien mit führender Nummer behalten ihren Platz. Alles ohne Nummer
+    ist frisch hochgeladen: es bekommt die nächste freie Nummer, wird auf
+    der Festplatte entsprechend umbenannt und landet damit am Ende des
+    Albums. Beim nächsten Lauf ist es dann eine gewöhnliche nummerierte
+    Datei — die Reihenfolge steht also dauerhaft fest und bleibt im
+    Dateinamen sichtbar."""
     folder = os.path.join(ALBUMS_DIR, album)
     if not os.path.isdir(folder):
         return []
-    return sorted(f for f in os.listdir(folder)
-                  if f.lower().endswith(SOURCE_TYPES) and not f.startswith("."))
+
+    files = [f for f in os.listdir(folder)
+             if f.lower().endswith(SOURCE_TYPES) and not f.startswith(".")]
+
+    numbered, fresh = [], []
+    for f in files:
+        m = NUM_PREFIX.match(f)
+        if m:
+            numbered.append((int(m.group(1)), f))
+        else:
+            fresh.append(f)
+
+    numbered.sort(key=lambda t: (t[0], t[1]))
+    next_num = (max((n for n, _ in numbered), default=0)) + 1
+
+    for f in sorted(fresh):
+        new_name = f"{next_num:02d}-{f}"
+        while os.path.exists(os.path.join(folder, new_name)):
+            next_num += 1
+            new_name = f"{next_num:02d}-{f}"
+        os.rename(os.path.join(folder, f), os.path.join(folder, new_name))
+        print(f"  ~ {album}/{f} -> {new_name} (ans Ende gestellt)")
+        numbered.append((next_num, new_name))
+        next_num += 1
+
+    return [f for _, f in numbered]
 
 
 def derive(src_path, name):
@@ -102,9 +138,11 @@ def derive(src_path, name):
     # Unverändert seit dem letzten Lauf? Dann nur die Maße nachschlagen.
     # Das hält die Laufzeit kurz und vermeidet, dass identische Bilder bei
     # jedem Durchlauf neu geschrieben und damit erneut committet werden.
-    if os.path.exists(grid_out) and os.path.exists(full_out):
+    grid_webp = os.path.splitext(grid_out)[0] + ".webp"
+    full_webp = os.path.splitext(full_out)[0] + ".webp"
+    if all(os.path.exists(x) for x in (grid_out, full_out, grid_webp, full_webp)):
         src_time = os.path.getmtime(src_path)
-        if os.path.getmtime(grid_out) >= src_time and os.path.getmtime(full_out) >= src_time:
+        if min(os.path.getmtime(x) for x in (grid_out, full_out, grid_webp, full_webp)) >= src_time:
             with Image.open(grid_out) as done:
                 return done.size
 
@@ -125,26 +163,38 @@ def derive(src_path, name):
         if w > gw:
             grid = grid.resize((gw, round(h * gw / w)), Image.LANCZOS)
         grid.save(grid_out, "JPEG", quality=GRID_QUALITY, optimize=True, progressive=True)
+
+        # WebP-Fassungen daneben legen
+        grid.save(os.path.splitext(grid_out)[0] + ".webp", "WEBP",
+                  quality=WEBP_QUALITY, method=6)
+        with Image.open(full_out) as f:
+            f.convert("RGB").save(os.path.splitext(full_out)[0] + ".webp", "WEBP",
+                                  quality=WEBP_QUALITY, method=6)
         return grid.size
 
 
 def figure(name, alt, w, h):
+    """Absolute Pfade, damit sie aus jeder Verzeichnistiefe stimmen, und ein
+    <picture> mit WebP — der Browser nimmt das kleinere Format, wenn er kann."""
     return ('        <figure class="art-piece">\n'
-            f'          <img src="../images/{name}.jpg" '
-            f'data-full="../images/full/{name}.jpg" alt="{alt}" '
+            '          <picture>\n'
+            f'            <source srcset="/images/{name}.webp" type="image/webp">\n'
+            f'            <img src="/images/{name}.jpg" '
+            f'data-full="/images/full/{name}.jpg" alt="{alt}" '
             f'width="{w}" height="{h}" loading="lazy" decoding="async">\n'
+            '          </picture>\n'
             '        </figure>')
 
 
 def rewrite(album, figures):
-    path = os.path.join(GALLERY_DIR, album + ".html")
+    path = os.path.join(GALLERY_DIR, album, "index.html")
     if not os.path.exists(path):
-        print(f"  ! gallery/{album}.html fehlt — übersprungen")
+        print(f"  ! gallery/{album}/index.html fehlt — übersprungen")
         return False
     html = open(path, encoding="utf-8").read()
     i, j = html.find(START), html.find(END)
     if i == -1 or j == -1:
-        print(f"  ! Markierungen fehlen in gallery/{album}.html — übersprungen")
+        print(f"  ! Markierungen fehlen in gallery/{album}/index.html — übersprungen")
         return False
     head_end = html.find("\n", i) + 1
     indent = html[html.rfind("\n", 0, j) + 1:j]   # Einrückung der Endmarkierung merken
@@ -161,6 +211,7 @@ def main():
     seen = {}
     changed = False
     keep = set()
+    missing = []
 
     for album in ALBUMS:
         figures = []
@@ -174,8 +225,14 @@ def main():
 
             w, h = derive(os.path.join(ALBUMS_DIR, album, fname), name)
             keep.add(name)
-            alt = caps.get(f"{album}/{fname}".lower(),
-                           f"Work from the {album} collection").replace('"', "&quot;")
+            alt = (caps.get(f"{album}/{name}.jpg")          # stabil beim Umsortieren
+                   or caps.get(f"{album}/{fname}".lower())  # alte Schreibweise mit Nummer
+                   or caps.get(name)
+                   or "")
+            if not alt:
+                missing.append(f"{album}/{fname}")
+                alt = f"Work from the {album} collection"
+            alt = alt.replace('"', "&quot;")
             figures.append(figure(name, alt, w, h))
             print(f"  {album}/{fname} -> images/{name}.jpg ({w}x{h})")
 
@@ -186,15 +243,23 @@ def main():
     # Bilder aufräumen, deren Quelldatei nicht mehr existiert. Alles, was von
     # anderen Seiten gebraucht wird (Banner, Portrait, Favicon), bleibt.
     protected = {"man-left", "man-right", "portrait"}
-    for f in os.listdir(FULL_DIR):
-        stem = os.path.splitext(f)[0]
-        if stem not in keep and stem not in protected:
-            os.remove(os.path.join(FULL_DIR, f))
-            grid = os.path.join(IMAGES_DIR, f)
-            if os.path.exists(grid):
-                os.remove(grid)
-            print(f"  - {stem} entfernt (keine Quelldatei mehr)")
-            changed = True
+    for stem in sorted({os.path.splitext(f)[0] for f in os.listdir(FULL_DIR)}):
+        if stem in keep or stem in protected:
+            continue
+        for folder in (FULL_DIR, IMAGES_DIR):
+            for ext in (".jpg", ".webp"):
+                victim = os.path.join(folder, stem + ext)
+                if os.path.exists(victim):
+                    os.remove(victim)
+        print(f"  - {stem} entfernt (keine Quelldatei mehr)")
+        changed = True
+
+    if missing:
+        print("\nOhne Bildbeschreibung (allgemeiner Text wird verwendet).")
+        print("Trage sie in captions.txt nach, wenn du magst:")
+        for m in missing:
+            album, fname = m.split("/", 1)
+            print(f"  {album}/{output_name(fname)}.jpg | ")
 
     print("\nÄnderungen vorhanden." if changed else "\nNichts zu tun.")
 

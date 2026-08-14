@@ -11,9 +11,26 @@ Hier legst du neue Arbeiten ab. Alles andere passiert automatisch — du musst n
 
 Das geht auch vom Handy — es sind einzelne Dateien, keine Ordner.
 
+**Um die Nummer musst du dich nicht kümmern.** Lädst du eine Datei ohne führende Zahl hoch, bekommt sie automatisch die nächste freie und wird im Ordner entsprechend umbenannt. Sie landet damit am Ende des Albums. Aus `nebel.jpg` wird also `09-nebel.jpg`, wenn acht Bilder vorhanden waren. Lädst du mehrere auf einmal hoch, werden sie alphabetisch durchnummeriert.
+
+## Wie das Bild am Ende heißt
+
+Der Name kommt aus **deinem** Dateinamen — nichts wird automatisch fortnummeriert. Die führende Zahl fällt weg, Groß-/Kleinschreibung und Sonderzeichen werden vereinheitlicht:
+
+| Du lädst hoch | Auf der Website |
+|---|---|
+| `09-nebel.jpg` | `images/nebel.jpg` |
+| `10-analog-09.jpg` | `images/analog-09.jpg` |
+| `IMG_2481.JPG` | `images/img-2481.jpg` |
+| `Strand bei Nacht.jpeg` | `images/strand-bei-nacht.jpg` |
+
+Die Nummer vergibt das Skript selbst, du brauchst sie beim Hochladen nicht mitzuliefern. Willst du eine bestimmte Position, kannst du sie aber vorgeben.
+
+Zwei Dateien dürfen nicht denselben Endnamen ergeben. Passiert das, bricht der Durchlauf mit einer klaren Meldung ab und die Website bleibt unverändert.
+
 ## Reihenfolge
 
-Die Zahl am Anfang des Dateinamens bestimmt die Position:
+Die Zahl am Anfang des Dateinamens bestimmt die Position — sie wird beim ersten Durchlauf automatisch vergeben, du kannst sie danach jederzeit ändern:
 
 ```
 01-antoinette.jpg
@@ -51,13 +68,19 @@ Löschst du eines davon, bleibt dort eine Lücke. Dann muss der Verweis in `inde
 
 ## Bildbeschreibung ergänzen
 
-Optional, aber gut für Screenreader und die Bildersuche. In `captions.txt` eine Zeile ergänzen:
+**Es entsteht keine automatische Beschreibung.** Ohne Eintrag bekommt das Bild den allgemeinen Text „Work from the analog collection" — die Seite funktioniert damit, aber für Screenreader und die Bildersuche bringt das nichts.
+
+Eine echte Beschreibung trägst du in `captions.txt` nach:
 
 ```
-analog/09-nebel.jpg | Film photograph: fog over a field at first light
+analog/nebel.jpg | Film photograph: fog over a field at first light
 ```
 
-Links steht der **Dateiname im albums-Ordner**, inklusive Nummer. Ohne Eintrag bekommt das Bild eine allgemeine Beschreibung — es geht also nichts kaputt, wenn du es vergisst.
+Links steht der Name **ohne** die führende Nummer. Dadurch bleibt die Beschreibung erhalten, wenn du später umsortierst und die Nummer sich ändert.
+
+Das kannst du jederzeit nachholen, auch lange nach dem Upload — `captions.txt` lässt sich direkt auf GitHub bearbeiten, auch vom Handy. Nach dem Speichern läuft die Automatik erneut.
+
+**Tipp:** Im Reiter Actions listet jeder Durchlauf am Ende alle Bilder ohne Beschreibung auf, fertig zum Kopieren.
 
 ## Dateiformate
 

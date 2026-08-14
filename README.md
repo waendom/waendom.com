@@ -6,20 +6,23 @@ Statische Portfolio-Seite — reines HTML/CSS/JS, bereit für GitHub Pages.
 
 ```
 waendom-site/
-├── index.html              Startseite: Banner, Welcome-Text, 5 Werke, "more"
-├── about.html               about waendom
-├── contact.html             contact — E-Mail
+├── index.html              Startseite            -> waendom.com/
+├── about/index.html         about waendom         -> waendom.com/about/
+├── contact/index.html       contact               -> waendom.com/contact/
+├── home/index.html          Weiterleitung für die alte Google-Adresse /home
+├── sitemap.xml              Seitenverzeichnis für Suchmaschinen
+├── robots.txt               Hinweise für Suchmaschinen
 ├── style.css                 Design
 ├── script.js                   Menü, Scroll-Effekte, Lightbox
 ├── tools/                     Build-Skripte (nicht Teil der Website, s. tools/README.md)
 ├── 404.html                  eigene Fehlerseite (GitHub Pages nutzt sie automatisch)
 ├── gallery/
-│   ├── index.html             Übersicht: digital / canvas / analog / sticker
-│   ├── digital.html             11 Arbeiten
-│   ├── canvas.html               8 Arbeiten
-│   ├── analog.html               8 Fotografien
-│   └── sticker.html              7 Fotos
-└── images/                    Rasterbilder (max. 1200 px)
+│   ├── index.html             Übersicht         -> waendom.com/gallery/
+│   ├── digital/index.html       11 Arbeiten     -> waendom.com/gallery/digital/
+│   ├── canvas/index.html         8 Arbeiten     -> waendom.com/gallery/canvas/
+│   ├── analog/index.html         8 Fotografien  -> waendom.com/gallery/analog/
+│   └── sticker/index.html        7 Fotos        -> waendom.com/gallery/sticker/
+└── images/                    Rasterbilder (1200 px), je als JPG und WebP
     └── full/                    hochauflösende Fassungen für die Lightbox
 ```
 
@@ -65,6 +68,16 @@ Nach ein bis zwei Minuten liegt die Seite unter `https://<username>.github.io/<r
 Bild in den passenden Ordner unter `albums/` hochladen — fertig. GitHub verkleinert es, erzeugt die Lightbox-Fassung und trägt es in die Galerie ein. Ausführlich in `albums/README.md`.
 
 Einmalig nötig: **Settings → Actions → General → Workflow permissions → Read and write permissions**.
+
+## Adressen
+
+Jede Seite liegt als `index.html` in einem eigenen Verzeichnis. GitHub Pages liefert die dann automatisch aus, wenn nur das Verzeichnis aufgerufen wird — dadurch steht in der Adressleiste `waendom.com/gallery/` statt `waendom.com/gallery/index.html`.
+
+Alle internen Verweise sind deshalb **absolut** (`/about/`, `/images/…`). Das setzt voraus, dass die Seite im Wurzelverzeichnis der Domain liegt — unter waendom.com ist das der Fall. Öffnest du die Dateien lokal per Doppelklick, findet der Browser Bilder und Stylesheet nicht; zum Testen also die Live-Seite nutzen.
+
+## Bildformate
+
+Jedes Bild liegt zweifach vor: als JPG und als WebP (rund 37 % kleiner). Im HTML steht ein `<picture>`-Element — moderne Browser nehmen WebP, ältere fallen automatisch aufs JPG zurück. Die Lightbox prüft die Unterstützung per JavaScript und lädt entsprechend.
 
 ## Offene Punkte
 
