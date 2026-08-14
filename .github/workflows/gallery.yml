@@ -1,1 +1,56 @@
+name: Galerie aktualisieren
 
+# Läuft automatisch, sobald du in einem albums/-Ordner etwas hochlädst,
+# umbenennst oder löschst — auch vom Handy aus.
+# Lässt sich außerdem jederzeit von Hand starten:
+# Reiter "Actions" -> "Galerie aktualisieren" -> "Run workflow".
+on:
+  push:
+    branches: [main]
+    paths:
+      - "albums/**"
+      - "captions.txt"
+  workflow_dispatch:
+
+# Der Ablauf schreibt das Ergebnis zurück ins Repository und braucht dafür
+# Schreibrechte. Zusätzlich muss einmalig in den Repository-Einstellungen
+# unter Actions -> General -> Workflow permissions
+# "Read and write permissions" ausgewählt sein.
+permissions:
+  contents: write
+
+# Bei mehreren Uploads kurz hintereinander laufen die Durchgänge nacheinander,
+# damit sie sich nicht gegenseitig überschreiben.
+concurrency:
+  group: gallery
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository holen
+        uses: actions/checkout@v4
+
+      - name: Python bereitstellen
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Bildbibliothek installieren
+        run: pip install --quiet pillow pillow-heif
+
+      - name: Bilder verarbeiten und Galerieseiten aktualisieren
+        run: python tools/gallery.py
+
+      - name: Ergebnis zurückschreiben
+        run: |
+          git config user.name "waendom bot"
+          git config user.email "actions@github.com"
+          git add images gallery albums
+          if git diff --staged --quiet; then
+            echo "Keine Änderungen — nichts zu committen."
+          else
+            git commit -m "Galerie aktualisiert (automatisch)"
+            git push
+          fi
