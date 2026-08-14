@@ -41,18 +41,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const bar = document.querySelector(".wordmark-bar");
 
   if (bar) {
-    const homeHref = bar.getAttribute("href");
     const upHref = bar.dataset.up || null;
 
     bar.addEventListener("click", (e) => {
-      if (!document.body.classList.contains("is-scrolled")) return; // plain link home
+      // Only pages that carry a data-up target ever turn into a back arrow.
+      // Everywhere else the bar keeps reading "waendom.com" and behaves as
+      // the plain link home that it looks like.
+      if (!upHref) return;
+      if (!document.body.classList.contains("is-scrolled")) return;
       e.preventDefault();
-      if (upHref) {
-        window.location.href = upHref;
-      } else {
-        // already at the top of the hierarchy (home) — just scroll up
-        window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
-      }
+      window.location.href = upHref;
     });
   }
 
@@ -99,7 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // wordmark bar collapses into a back arrow
     const scrolled = y > 40;
     document.body.classList.toggle("is-scrolled", scrolled);
-    if (bar) bar.setAttribute("aria-label", scrolled ? "Zurück" : "Zur Startseite");
+    if (bar && bar.dataset.up) {
+      bar.setAttribute("aria-label", scrolled ? "Zurück" : "Zur Startseite");
+    }
 
     // back-to-top fades in as the foot of the page comes within reach
     if (toTop) toTop.classList.toggle("is-visible", nearPageEnd());

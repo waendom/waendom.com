@@ -60,8 +60,15 @@ Nach ein bis zwei Minuten liegt die Seite unter `https://<username>.github.io/<r
 - **Vorschaubild beim Teilen:** in `build_site.py` die Variable `og_image` in der `head()`-Funktion (Standard: `images/cap.jpg`).
 - **Zurück-Hierarchie:** in `build_site.py` bei den `chrome(...)`-Aufrufen der Parameter `up=`.
 
+## Neue Bilder hinzufügen
+
+Bild in den passenden Ordner unter `albums/` hochladen — fertig. GitHub verkleinert es, erzeugt die Lightbox-Fassung und trägt es in die Galerie ein. Ausführlich in `albums/README.md`.
+
+Einmalig nötig: **Settings → Actions → General → Workflow permissions → Read and write permissions**.
+
 ## Offene Punkte
 
 - **Rechtsklick** ist deaktiviert. Das hält Gelegenheitskopien auf, ist aber kein echter Schutz: Bilder lassen sich weiterhin über die Entwicklerkonsole, den Seitenquelltext oder schlicht per Screenshot sichern. Wenn dir das wichtig ist, wäre ein sichtbares Wasserzeichen der wirksamere Weg.
 - **Vorschaubild-URL:** die `og:image`-Angabe ist auf `https://waendom.com/...` fest verdrahtet. Läuft die Seite noch nicht unter der eigenen Domain, greifen Plattformen wie WhatsApp oder Reddit beim Teilen ins Leere. Sobald die netcup-Domain live ist, passt das automatisch — bis dahin in `build_site.py` bei `SITE_URL` anpassbar.
 - **Zurück-Wischgeste des Handys:** Das ist Verhalten des Browsers bzw. der App, in der die Seite geöffnet wird (z. B. Reddits eingebauter Browser), nicht etwas, das der Seitencode direkt steuert. Kommt man über einen externen Link direkt auf eine Unterseite, ist dort noch keine eigene Vorgeschichte vorhanden — die Wischgeste verlässt dann die Seite, was in den meisten Browsern normales Verhalten ist. Tritt es auch nach mehreren Klicks innerhalb der Seite auf, sag mir, in welcher App/welchem Browser genau — das würde für ein browserspezifisches Verhalten sprechen, das sich eventuell umgehen lässt.
+

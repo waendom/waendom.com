@@ -1,0 +1,51 @@
+# Bildbeschreibungen (alt-Texte)
+#
+#   album/dateiname.jpg | Beschreibung
+#
+# Screenreader lesen diesen Text vor, und die Bildersuche nutzt ihn.
+# Fehlt eine Zeile, bekommt das Bild eine allgemeine Beschreibung —
+# es geht also nichts kaputt, wenn du es vergisst.
+# Zeilen mit # am Anfang werden ignoriert.
+
+# ---------- digital ----------
+digital/01-antoinette.jpg | Digital painting: a woman in profile wearing a red flat cap, dark bobbed hair, against a warm orange background
+digital/02-mary-cooper.jpg | Digital painting: a woman in profile with dark hair, wrapped in a rust-red cloak over a white collar, on a pale cream ground
+digital/03-coated.jpg | Digital painting: a woman glancing back over her shoulder, hair pinned up, in a deep green coat against a soft sage background
+digital/04-astronaut.jpg | Digital painting: an astronaut in a white suit with a dark visor, standing against a flat teal background
+digital/05-die-ruderer.jpg | Digital painting after Kirchner: four rowers pulling long oars, sea and pale sky behind them
+digital/06-rouven.jpg | Digital painting: a young man in a green jacket over a blue shirt, arms folded, on a warm yellow background
+digital/07-flat-cap.jpg | Digital painting: a person in a flat cap and bow tie with a cigarette between their lips, grey background
+digital/08-blue.jpg | Digital painting: a blonde woman with folded arms in an olive sweater, against a flat light blue background
+digital/09-greyscale.jpg | Digital painting in greyscale: a woman with her hair wrapped up, wearing an open jacket, turned towards the viewer
+digital/10-sunbleached.jpg | Flat-colour illustration: a figure in a blue two-piece, one arm raised, hair falling across the face, on a deep orange ground
+digital/11-cap.jpg | Digital painting: a close-up face under a maroon cap, brow furrowed and mouth open, against a muted green background
+
+# ---------- canvas ----------
+canvas/01-heisenberg.jpg | Charcoal drawing on paper: a man in a wide-brimmed hat and glasses with a goatee, looking straight ahead
+canvas/02-canvas-01.jpg | Oil study on canvas: a face in close-up, eyes lowered, painted in soft terracotta and grey
+canvas/03-canvas-02.jpg | Oil study on canvas: the lower half of a face in close-up, lips parted, in warm orange tones
+canvas/04-canvas-03.jpg | Oil study on canvas: a single eye and brow in close-up, painted in reddish brown over visible canvas weave
+canvas/05-canvas-04.jpg | Oil study on canvas: an eye and a smiling mouth in close-up, in muted sepia tones
+canvas/06-canvas-05.jpg | Oil study on canvas: a face in close-up with both eyes and lips visible, painted in warm terracotta
+canvas/07-canvas-07.jpg | Acrylic on canvas in black and white: a woman in a wide-brimmed hat with two braids, looking to one side
+canvas/08-canvas-08.jpg | Ink and marker on paper: a woman with round glasses and dark curly hair, one arm raised behind her head, in a yellow jacket
+
+# ---------- analog ----------
+analog/01-analog-01.jpg | Film photograph: a red rescue helicopter hovering above rooftops in the pale light before sunset
+analog/02-analog-02.jpg | Film photograph: a person silhouetted against an open window, bright overcast sky outside
+analog/03-analog-03.jpg | Film photograph: the upper corner of a modern high-rise, its glass facade catching low sun against a blue sky
+analog/04-analog-04.jpg | Film photograph: a seal resting on the sand in front of dune fencing and marram grass
+analog/05-analog-05.jpg | Film photograph: a small helicopter far up in a soft, clouded sky
+analog/06-analog-06.jpg | Film photograph: a person in a cap and sunglasses at a campsite, a yellow van and tents in the background
+analog/07-analog-07.jpg | Film photograph: a green wheat field under a pink and blue dusk sky
+analog/08-analog-08.jpg | Film photograph: a climber stretched across an overhanging limestone face, rope running below
+
+# ---------- sticker ----------
+sticker/01-sticker-stapel.jpg | A stack of freshly printed waendom.com stickers on a wooden floor
+sticker/02-sticker-alpenrod.jpg | A waendom sticker on a lamppost, among other stickers
+sticker/03-sticker-bergstation.jpg | A waendom sticker on the frame of a mountain lift, a lake and hills in the distance
+sticker/04-sticker-laptop.jpg | A waendom sticker on a laptop lid alongside other stickers
+sticker/05-sticker-dschungel.jpg | A waendom sticker on a dark post surrounded by dense tropical greenery
+sticker/06-sticker-backstein.jpg | A waendom sticker on a grey pole in front of a brick wall
+sticker/07-sticker-stahl.jpg | A round waendom sticker on a weathered metal surface
+
